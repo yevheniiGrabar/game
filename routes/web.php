@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [UserController::class, 'showRegistrationForm']);
-Route::post('/register', [UserController::class, 'register']);
+Route::get('/', [AuthController::class, 'showRegistrationForm']);
+Route::post('/register', [AuthController::class, 'register']);
+
 Route::get('/page/{link}', [UserController::class, 'showPage']);
 Route::post('/page/{link}/generate-link', [UserController::class, 'generateNewLink']);
 Route::post('/page/{link}/deactivate', [UserController::class, 'deactivateLink']);

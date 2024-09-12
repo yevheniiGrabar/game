@@ -5,33 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\GameHistory;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function showRegistrationForm()
-    {
-        return view('register');
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'username' => 'required',
-            'phonenumber' => 'required|numeric',
-        ]);
-
-        $user = new User();
-        $user->username = $request->username;
-        $user->phonenumber = $request->phonenumber;
-        $user->link = Str::random(32);
-        $user->link_expiry = Carbon::now()->addDays(7);
-        $user->save();
-
-        return redirect('/page/' . $user->link);
-    }
-
     public function showPage($link)
     {
         $user = User::where('link', $link)->where('link_expiry', '>', Carbon::now())->firstOrFail();
@@ -77,7 +54,6 @@ class UserController extends Controller
             }
         }
 
-        // Сохраняем результат
         GameHistory::create([
             'user_id' => $user->id,
             'random_number' => $randomNumber,
